@@ -56,11 +56,23 @@
                     <select name="status" id="status"
                         class="px-4 py-2 border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400">
                         <option value="" disabled>Pilih Status</option>
-                        <option value="Aktif" {{ old('status', $gunung->status) == 'Aktif' ? 'selected' : '' }}>Aktif</option>
+                        <option value="Aktif" {{ old('status', $gunung->status) == 'Aktif' ? 'selected' : '' }}>Aktif
+                        </option>
                         <option value="Tidak Aktif" {{ old('status', $gunung->status) == 'Tidak Aktif' ? 'selected' : '' }}>Tidak Aktif</option>
-                        <option value="Meletus" {{ old('status', $gunung->status) == 'Meletus' ? 'selected' : '' }}>Meletus</option>
+                        <option value="Meletus" {{ old('status', $gunung->status) == 'Meletus' ? 'selected' : '' }}>
+                            Meletus</option>
                     </select>
                     @error('status')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="flex flex-col gap-2 bg-gray-50 p-4 rounded-lg border col-span-1 md:col-span-2">
+                    <label for="gambar" class="text-sm font-semibold text-gray-700">URL Gambar Gunung</label>
+                    <input type="url" id="gambar" name="gambar"
+                        placeholder="Masukkan URL gambar, misal: https://example.com/image.jpg"
+                        class="px-4 py-2 border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400"
+                        value="{{ old('gambar') }}">
+                    @error('gambar')
                         <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
                 </div>

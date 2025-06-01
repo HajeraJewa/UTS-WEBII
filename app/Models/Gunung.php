@@ -28,5 +28,11 @@ class Gunung extends Model
         'lokasi',
         'ketinggian',
         'status',
+        'gambar',
     ];
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+    
 }

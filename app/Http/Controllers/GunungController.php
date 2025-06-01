@@ -4,70 +4,99 @@ namespace App\Http\Controllers;
 
 use App\Models\Gunung;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class GunungController extends Controller
 {
-    // Menampilkan daftar gunung
     public function index()
     {
+        if (!Gate::allows('view-gunungs')) {
+            abort(401);
+        }
+
         $gunungs = Gunung::all();
         return view('gunungs.index', compact('gunungs'));
     }
 
-    // Menampilkan form untuk menambah gunung baru
+  
     public function create()
     {
+        if (!Gate::allows('store-gunungs')) {
+            abort(401);
+        }
+
         return view('gunungs.create');
     }
-
-    // Menyimpan gunung baru ke dalam database
     public function store(Request $request)
     {
+        if (!Gate::allows('store-gunungs')) {
+            abort(401);
+        }
+
         $request->validate([
-            'nama' => 'required',
-            'lokasi' => 'required',
+            'nama' => 'required|string|max:255',
+            'lokasi' => 'required|string|max:255',
             'ketinggian' => 'required|numeric',
-            'status' => 'required',
+            'status' => 'required|in:Aktif,Tidak Aktif,Meletus',
+            'gambar' => 'nullable|url',  // Validasi gambar sebagai URL
         ]);
 
-        Gunung::create($request->all());
+        $data = $request->only(['nama', 'lokasi', 'ketinggian', 'status', 'gambar']);
+
+        Gunung::create($data);
 
         return redirect()->route('gunungs.index')->with('success', 'Data gunung berhasil disimpan!');
     }
 
-    // Menampilkan detail gunung berdasarkan ID
+
     public function show($id)
     {
+        if (!Gate::allows('view-gunungs')) {
+            abort(401);
+        }
+
         $gunung = Gunung::findOrFail($id);
         return view('gunungs.show', compact('gunung'));
     }
 
-    // Menampilkan form untuk mengedit gunung
+
     public function edit($id)
     {
+        if (!Gate::allows('edit-gunungs')) {
+            abort(401);
+        }
+
         $gunung = Gunung::findOrFail($id);
         return view('gunungs.edit', compact('gunung'));
     }
 
-    // Memperbarui data gunung
     public function update(Request $request, $id)
     {
+        if (!Gate::allows('edit-gunungs')) {
+            abort(401);
+        }
+
         $request->validate([
-            'nama' => 'required',
-            'lokasi' => 'required',
+            'nama' => 'required|string|max:255',
+            'lokasi' => 'required|string|max:255',
             'ketinggian' => 'required|numeric',
-            'status' => 'required',
+            'status' => 'required|in:Aktif,Tidak Aktif,Meletus',
+            'gambar' => 'nullable|url',  // Validasi gambar sebagai URL
         ]);
 
         $gunung = Gunung::findOrFail($id);
-        $gunung->update($request->all());
+        $data = $request->only(['nama', 'lokasi', 'ketinggian', 'status', 'gambar']);
+
+        $gunung->update($data);
 
         return redirect()->route('gunungs.index')->with('success', 'Data gunung berhasil diperbarui!');
     }
-
-    // Menghapus gunung
     public function destroy($id)
     {
+        if (!Gate::allows('destroy-gunungs')) {
+            abort(401);
+        }
+
         $gunung = Gunung::findOrFail($id);
         $gunung->delete();
 

@@ -13,6 +13,7 @@ return new class extends Migration {
             $table->string('lokasi');
             $table->integer('ketinggian');
             $table->enum('status', ['Aktif', 'Tidak Aktif', 'Meletus']);
+            $table->string('gambar')->nullable();
             $table->timestamps();
         });
     }

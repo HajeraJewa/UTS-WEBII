@@ -15,13 +15,16 @@
 </head>
 
 <body class="bg-gray-100 min-h-screen flex flex-col font-sans">
+    @php
+        $user = auth()->user();
+    @endphp
 
     <!-- Header -->
     <header x-data="{ open: false }" class="bg-green-700 text-white shadow-md sticky top-0 z-50">
         <div class="container mx-auto flex items-center justify-between px-6 py-4">
             <div class="flex items-center gap-3">
                 <i class="ph ph-mountains text-3xl"></i>
-                <span class="text-xl font-bold">Pemesanan Tiket Pendakian</span>
+                <span class="text-xl font-bold">MountTrip</span>
             </div>
             <nav class="hidden md:flex gap-6 text-sm font-semibold">
                 <a href="{{ route('dashboard') }}"
@@ -43,6 +46,16 @@
                 <a href="{{ route('pemesanans.index') }}"
                     class="text-white hover:text-green-200 transition-all {{ request()->routeIs('pemesanans.index') ? 'text-green-500' : '' }}">
                     Pemesanan
+                </a>
+                @if($user && $user->role === 'admin')
+                    <a href="{{ route('reviews.index') }}"
+                        class="text-white hover:text-green-200 transition-all {{ request()->routeIs('reviews.index') ? 'text-green-500' : '' }}">
+                        Review
+                    </a>
+                @endif
+                <a href="{{ route('profile.index') }}"
+                    class="text-white hover:text-green-200 transition-all {{ request()->routeIs('profile.index') ? 'text-green-500' : '' }}">
+                    Profile
                 </a>
             </nav>
             <button x-on:click="open = !open" class="block md:hidden">
@@ -73,6 +86,16 @@
                     class="text-white hover:text-green-200 transition-all {{ request()->routeIs('pemesanans.index') ? 'text-green-500' : '' }}">
                     Pemesanan
                 </a>
+                @if($user && $user->role === 'admin')
+                    <a href="{{ route('reviews.index') }}"
+                        class="text-white hover:text-green-200 transition-all {{ request()->routeIs('reviews.index') ? 'text-green-500' : '' }}">
+                        Review
+                    </a>
+                @endif
+                <a href="{{ route('profile.index') }}"
+                    class="text-white hover:text-green-200 transition-all {{ request()->routeIs('profile.index') ? 'text-green-500' : '' }}">
+                    Profile
+                </a>
             </nav>
         </div>
     </header>
@@ -94,4 +117,5 @@
         </div>
     </footer>
 </body>
+
 </html>
